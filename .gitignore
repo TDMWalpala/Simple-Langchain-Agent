@@ -1,2 +1,16 @@
+# Secrets — never commit API keys
 .env
+
+# Python / uv virtual environment
 .venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Editors and OS files
+.vscode/
+.idea/
+.DS_Store

@@ -1,20 +1,38 @@
 [project]
 name = "simple-langchain-agent"
 version = "0.1.0"
+description = "A small, beginner-friendly LangChain agent backed by Groq and Tavily search."
+readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "langchain>=1.4.3",
-    "langchain-community>=0.4.2",
-    "langchain-core>=1.6.6",
-    "langchain-groq>=1.1.3",
-    "langchainhub>=0.1.21",
-    "python-dotenv>=1.2.4",
-    "requests>=2.34.2",
-    "tavily-python>=0.8.4",
+    "certifi>=2025.8.3",
+    "langchain>=1.0.0",
+    "langchain-groq>=0.3.0",
+    "langchain-tavily>=0.2.0",
+    "python-dotenv>=1.1.0",
 ]
 
 [dependency-groups]
 dev = [
-    "ipykernel>=7.4.0",
-    "jupyter>=1.1.1",
+    "ipykernel>=7.0.0",
+    "jupyter>=1.1.0",
+    "pytest>=8.0.0",
+    "ruff>=0.14.0",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# `src` for the package when it isn't installed; `.` so `import app` works.
+pythonpath = ["src", "."]
+
+[tool.ruff.lint.isort]
+known-first-party = ["simple_agent"]
+
+# The project uses a `src/` layout, so it must be installed (editable by `uv sync`)
+# for `import simple_agent` to work in the notebook and in scripts.
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/simple_agent"]
