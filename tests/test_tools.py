@@ -21,7 +21,9 @@ Patcher = Callable[..., dict[str, Any]]
 # --- search tool -----------------------------------------------------------
 
 
-def test_search_tool_returns_tavily_with_default_limit(fake_env: dict[str, str]) -> None:
+def test_search_tool_returns_tavily_with_default_limit(
+    fake_env: dict[str, str],
+) -> None:
     tool = get_search_tool()
     assert isinstance(tool, TavilySearch)
     assert tool.max_results == MAX_SEARCH_RESULTS
@@ -81,7 +83,13 @@ def test_weather_sends_expected_request(
 def test_weather_multiple_descriptions_are_joined(
     fake_env: dict[str, str], patch_weather: Patcher
 ) -> None:
-    payload = {**WEATHER_OK, "current": {**WEATHER_OK["current"], "weather_descriptions": ["Partly", "Cloudy"]}}
+    payload = {
+        **WEATHER_OK,
+        "current": {
+            **WEATHER_OK["current"],
+            "weather_descriptions": ["Partly", "Cloudy"],
+        },
+    }
     patch_weather(payload)
     assert "Partly, Cloudy" in get_weather.invoke({"city": "Paris"})
 
@@ -102,7 +110,9 @@ def test_weather_handles_http_200_error_payload(
     fake_env: dict[str, str], patch_weather: Patcher
 ) -> None:
     """WeatherStack returns 200 + ``{"success": false, ...}`` for API errors."""
-    patch_weather({"success": False, "error": {"code": 101, "info": "Invalid API key."}})
+    patch_weather(
+        {"success": False, "error": {"code": 101, "info": "Invalid API key."}}
+    )
     result = get_weather.invoke({"city": "Paris"})
     assert result == "Weather lookup failed for Paris: Invalid API key."
 
@@ -126,7 +136,10 @@ def test_weather_never_emits_empty_description(
     fake_env: dict[str, str], patch_weather: Patcher
 ) -> None:
     """Regression: empty weather_descriptions used to yield '...is .'"""
-    payload = {**WEATHER_OK, "current": {**WEATHER_OK["current"], "weather_descriptions": []}}
+    payload = {
+        **WEATHER_OK,
+        "current": {**WEATHER_OK["current"], "weather_descriptions": []},
+    }
     patch_weather(payload)
     result = get_weather.invoke({"city": "Paris"})
     assert "unknown conditions" in result

@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
-import app
 import pytest
+
+import app
 
 
 def _fake_agent(answer: str = "Vienna.") -> MagicMock:
@@ -23,7 +24,10 @@ def test_main_asks_the_given_question(capsys: pytest.CaptureFixture[str]) -> Non
     assert capsys.readouterr().out.strip() == "It is sunny."
 
     inputs = agent.invoke.call_args.args[0]
-    assert inputs["messages"][0] == {"role": "user", "content": "What is the weather in Paris?"}
+    assert inputs["messages"][0] == {
+        "role": "user",
+        "content": "What is the weather in Paris?",
+    }
 
 
 def test_main_uses_default_question_when_none_given() -> None:
