@@ -86,7 +86,9 @@ def get_weather(city: str) -> str:
     if not current:
         return f"No current weather data available for {city}."
 
-    description = ", ".join(current.get("weather_descriptions", [])) or "unknown conditions"
+    description = (
+        ", ".join(current.get("weather_descriptions", [])) or "unknown conditions"
+    )
     location = data.get("location", {}).get("name", city)
     return (
         f"Weather in {location}: {description}. "

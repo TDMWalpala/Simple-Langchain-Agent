@@ -34,6 +34,8 @@ vector store. It is a *first LangChain agent*, not a production system.
 - Reusable `src/simple_agent` package used by the notebook and by `app.py`.
 - Command-line entry point: `uv run app.py "your question"`.
 - Offline pytest suite (`uv run pytest`): tools, config, model, agent, CLI.
+- GitHub Actions CI (`.github/workflows/python-ci.yml`) that runs `ruff check`,
+  `ruff format --check`, and `pytest` on every push and pull request.
 - Educational notebook covering setup, tools, the agent loop, message
   inspection, debugging, experimentation, and error handling.
 
@@ -198,10 +200,10 @@ uv run app.py "What is the current weather in Paris?"
 ```python
 from simple_agent import create_agent
 
-agent = create_agent()                     # LLM + tools are wired together
-answer = agent.invoke({
-    "messages": [{"role": "user", "content": "What is the capital of Austria?"}]
-})
+agent = create_agent()  # LLM + tools are wired together
+answer = agent.invoke(
+    {"messages": [{"role": "user", "content": "What is the capital of Austria?"}]}
+)
 print(answer["messages"][-1].content)
 ```
 
