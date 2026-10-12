@@ -21,7 +21,9 @@ def test_create_agent_wires_llm_tools_and_prompt() -> None:
 
     with (
         patch.object(agent_module, "get_llm", return_value=fake_llm),
-        patch.object(agent_module, "create_langchain_agent", return_value=fake_agent) as factory,
+        patch.object(
+            agent_module, "create_langchain_agent", return_value=fake_agent
+        ) as factory,
     ):
         result = create_agent()
 
