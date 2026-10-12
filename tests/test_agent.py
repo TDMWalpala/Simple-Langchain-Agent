@@ -15,7 +15,10 @@ import simple_agent.agent as agent_module
 from simple_agent.agent import SYSTEM_PROMPT, create_agent
 
 
-def test_create_agent_wires_llm_tools_and_prompt() -> None:
+def test_create_agent_wires_llm_tools_and_prompt(fake_env: dict[str, str]) -> None:
+    # `create_agent()` builds the tools through the real `get_search_tool()`,
+    # which validates API keys — so give it fake ones instead of relying on a
+    # developer's local `.env` (not present on CI).
     fake_llm = MagicMock(name="llm")
     fake_agent = MagicMock(name="agent")
 
